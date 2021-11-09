@@ -4,6 +4,10 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+let win = null
+let AutoLaunch = require('auto-launch');
+let Electron = require('electron');
+app.showExitPrompt = true;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -12,7 +16,7 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -22,7 +26,34 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
-  })
+  });
+
+  win.setMenu(null);
+
+  win.on('close', (e) => {
+    if (app.showExitPrompt) {
+      const options = {
+        type: 'question',  
+        title: '腰Tune終了の確認',
+        message: '本当に腰Tuneを終了しますか？',
+        detail: '腰痛が悪化してもいいですか？',
+        buttons: ['終了', 'キャンセル'],
+        cancelId: 1
+      };
+
+      const selected = Electron.dialog.showMessageBoxSync(options);
+
+      if(selected == 0)
+      {
+        win.destroy();
+        app.quit();
+      }
+      else
+      {
+        e.preventDefault();
+      }
+    }
+  });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -62,6 +93,32 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+
+  // 自動起動設定を初期化
+  var youtune = new AutoLaunch({
+    name:'youtune',
+    path:app.getPath('exe'),
+  });
+  
+  youtune.isEnabled()
+    .then(function(isEnabled){
+      if(isEnabled){
+        return;
+      }
+      // デバッグ時にはここはコメントアウトしておく
+      //youtune.enable();
+    })
+    .catch(function(err){
+      // エラー捕捉時の動作
+      new Notification("ERROR", { body: err })
+    });
+
+  // //二重起動の防止
+  const doubleboot = app.requestSingleInstanceLock();
+  if(!doubleboot){
+    app.quit();
+  }
+
   createWindow()
 })
 
