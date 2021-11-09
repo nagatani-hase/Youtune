@@ -1,55 +1,55 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+    <v-navigation-drawer app v-model="drawer" clipped >
+      <v-container>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title grey--text text--darken-2">
+              腰Tune
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+        <v-divider></v-divider>
+        <v-list nav>
+          <v-list-item v-for="list in nav_list" :key="list.name" :to="list.link">
+            <v-list-item-icon>
+              <v-icon>{{ list.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ list.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-container>
+    </v-navigation-drawer>
+    <v-app-bar color="primary" dark app clipped-left>
+      <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>腰Tune</v-toolbar-title>
     </v-app-bar>
-
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
+    <v-footer color="primary" dark app>
+      Youtune. For IT Engineer's Back Pain
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
-
-  data: () => ({
-    //
-  }),
-};
+  data(){
+    return{
+        drawer: null,
+        nav_list:[
+          {
+            name:'Home',link:'/',icon: 'mdi-speedometer',
+          },
+          {
+            name:'About',link:'/about',icon: 'mdi-speedometer',
+          }
+        ],
+    }
+  }
+}
 </script>
