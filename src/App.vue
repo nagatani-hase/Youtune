@@ -84,8 +84,8 @@ export default {
     start: function() {
       let self = this;
 
-      this.min = 0;
-      this.sec = 5;
+      this.min = 40;
+      this.sec = 0;
 
       this.timerObj = setInterval(function() {self.count()}, 1000)
       this.timerOn = true; 
