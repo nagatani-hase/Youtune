@@ -106,7 +106,7 @@ app.on('ready', async () => {
         return;
       }
       // デバッグ時にはここはコメントアウトしておく
-      //youtune.enable();
+      youtune.enable();
     })
     .catch(function(err){
       // エラー捕捉時の動作
