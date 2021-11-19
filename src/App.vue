@@ -30,7 +30,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title style="align-center">
-        現在の腰タイマー{{ formatTime }}
+        腰痛タイマー{{ formatTime }}
       </v-toolbar-title>
     </v-app-bar>
     <v-main>
@@ -50,7 +50,7 @@ export default {
         drawer: null,
         nav_list:[
           {
-            name:'腰タイマー',link:'/',icon: 'mdi-speedometer',
+            name:'腰痛タイマー',link:'/',icon: 'mdi-speedometer',
           },
           {
             name:'腰痛を防ぐ',link:'/yousupport',icon: 'mdi-cogs',
